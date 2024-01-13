@@ -37,7 +37,7 @@ class QuizBrain:
     def get_next_level_data(self):
         self.level += 1
         self.index += 1
-        #self.parameters['difficulty'] = self.difficulty[self.index]
+        ##self.parameters['difficulty'] = self.difficulty[self.index]
         self.question_data = self.get_data()['results']
         print(self.question_data)
 

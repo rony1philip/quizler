@@ -23,7 +23,7 @@ class QuizBrain:
     #         self.canvas.itemconfig(self.question_text, text=q_text)
 
     def get_data(self):
-        global question_data
+
         if self.level != 3 and not self.still_has_questions():
             self.get_next_level_data()
         else:

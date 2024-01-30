@@ -20,7 +20,7 @@ for question in question_data:
 quiz.question_data = question_bank
 
 quiz_ui = QuizInterface(quiz,new_question)
-3
+
 
 print("You've completed the quiz")
 print(f"Your final score was: {quiz.score}/{quiz.question_number}")

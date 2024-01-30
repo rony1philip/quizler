@@ -1,5 +1,6 @@
 from tkinter import *
 from quiz_brain import QuizBrain
+from question_model import Question
 
 
 THEME_COLOR = "#375362"
@@ -7,7 +8,10 @@ THEME_COLOR = "#375362"
 
 class QuizInterface:
 
-    def __init__(self, quiz_brain: QuizBrain):
+    def __init__(self, quiz_brain: QuizBrain, question: Question):
+        self.question_data_level_2 = None
+        self.question_data_level_3 = None
+        self.question = question
         self.quiz = quiz_brain
         self.score = 0
         self.window = Tk()
@@ -41,19 +45,30 @@ class QuizInterface:
         self.canvas.config(highlightbackground='white', highlightthickness=2)
         if self.quiz.still_has_questions():
             q_text = self.quiz.next_question()
-            self.canvas.itemconfig(self.question_text, text=q_text)
+        elif self.quiz.question_number_t == 30:
+            q_text = 'finito'
+            print('finito')
+        else:
+            self.quiz.index += 1
+            self.quiz.parameters = {'amount': 10, 'category': 18, 'difficulty': self.quiz.difficulty[self.quiz.index], 'type': 'boolean'}
+            print(self.quiz.parameters)
+            if self.quiz.parameters['difficulty'] == 'medium':
+                self.level_up(self.quiz.get_data())
+            if self.quiz.parameters['difficulty'] == 'hard':
+                self.question_data_level_3 = self.quiz.get_data()
 
+            q_text = self.quiz.next_question()
+
+
+        self.canvas.itemconfig(self.question_text, text=q_text)
 
     def x_button(self):
         is_right = self.buttons_funk('False')
         self.give_feedback(is_right)
 
-
-
     def v_button(self):
         is_right = self.buttons_funk('True')
         self.give_feedback(is_right)
-
 
     def buttons_funk(self, true_false):
         q_answer = self.quiz.check_answer()
@@ -64,11 +79,20 @@ class QuizInterface:
         else:
             return False
 
-
-
     def give_feedback(self, is_true):
         if is_true:
             self.canvas.config(highlightbackground='green', highlightthickness=10)
         else:
             self.canvas.config(highlightbackground='red', highlightthickness=10)
         self.window.after(1000, func=self.get_next_question)
+
+    def level_up(self, question_data):
+        question_bank = []
+        for question in question_data:
+            question_bank.append(
+                Question(
+                    question["question"],
+                    question["correct_answer"]
+                )
+            )
+        self.quiz.question_data = question_bank

@@ -59,6 +59,7 @@ class QuizInterface:
 
             q_text = self.quiz.next_question()
 
+
         self.canvas.itemconfig(self.question_text, text=q_text)
 
     def x_button(self):
@@ -88,7 +89,10 @@ class QuizInterface:
     def level_up(self, question_data):
         question_bank = []
         for question in question_data:
-            self.question.text = question["question"]
-            self.question.answer = question["correct_answer"]
-            question_bank.append(self.question)
+            question_bank.append(
+                Question(
+                    question["question"],
+                    question["correct_answer"]
+                )
+            )
         self.quiz.question_data = question_bank

@@ -21,7 +21,6 @@ class QuizBrain:
         response.raise_for_status()
         question_data = response.json()
         self.question_data = question_data['results']
-        print(f'{0} {self.question_data}')
         return self.question_data
 
     def still_has_questions(self):
